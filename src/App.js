@@ -12,7 +12,12 @@ import strings from "./strings";
 import privateInfo from "./privateInfo";
 
 class App extends React.Component {
-  state = { loading: true, connected: false, messages: [] };
+  state = {
+    loading: true,
+    connected: false,
+    messages: [],
+    messageSelected: null
+  };
 
   componentDidMount() {
     messaging.register(this.handleMessage);
@@ -39,9 +44,35 @@ class App extends React.Component {
 
   handleMessage = message => {
     const { messages } = this.state;
-    this.setState({
-      messages: messages.concat(JSON.parse(message.payloadString))
-    });
+    const messageObj = JSON.parse(message.payloadString);
+    if (messageObj.timeSlot) {
+      // message sent from a patient
+      // no new availability will be added
+      // instead, an exisiting availability will lost a timeslot
+      // if it has no timeslots afterwards, it will be deleted
+      this.setState({
+        messages: messages
+          .map(message => {
+            const { timeSlot, ...other } = messageObj;
+            if (JSON.stringify(message) === JSON.stringify({ ...other })) {
+              return {
+                ...message,
+                availability: message.availability.filter(
+                  item => item !== timeSlot
+                )
+              };
+            }
+            return message;
+          })
+          .filter(message => message.availability.length)
+      });
+    } else {
+      // message sent from a doctor
+      // a new availability will be added
+      this.setState({
+        messages: messages.concat(messageObj)
+      });
+    }
   };
 
   connect = () =>
@@ -62,7 +93,13 @@ class App extends React.Component {
       });
 
   render() {
-    const { loading, connected, coords, messages } = this.state;
+    const {
+      loading,
+      connected,
+      coords,
+      messages,
+      messageSelected
+    } = this.state;
     return (
       <Container fluid={true}>
         {loading && connected ? (
@@ -70,7 +107,13 @@ class App extends React.Component {
         ) : (
           <Row>
             <Col md={12} lg={5}>
-              <Panel coords={coords} />
+              <Panel
+                coords={coords}
+                messageSelected={messageSelected}
+                onSelectTimeSlot={() =>
+                  this.setState({ messageSelected: null })
+                }
+              />
             </Col>
             <Col style={{ height: "100vh" }}>
               <GoogleMapReact
@@ -84,7 +127,8 @@ class App extends React.Component {
                     lat={message.lat}
                     lng={message.lng}
                     color="white"
-                    info={message}
+                    message={message}
+                    onSelect={() => this.setState({ messageSelected: message })}
                   />
                 ))}
               </GoogleMapReact>

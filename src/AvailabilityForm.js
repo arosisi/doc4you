@@ -42,8 +42,16 @@ class AvailabilityForm extends React.Component {
   };
 
   isFormComplete = () => {
-    const { firstName, lastName, address1, phoneNumber } = this.state;
-    return firstName && lastName && address1 && phoneNumber;
+    const {
+      firstName,
+      lastName,
+      address1,
+      phoneNumber,
+      availability
+    } = this.state;
+    return (
+      firstName && lastName && address1 && phoneNumber && availability.length
+    );
   };
 
   submit = event => {
@@ -78,7 +86,7 @@ class AvailabilityForm extends React.Component {
     } = this.state;
     return (
       <Container style={{ margin: "20px 0 20px 0" }}>
-        <Form noValidate onSubmit={this.submit}>
+        <Form onSubmit={this.submit}>
           <Form.Row>
             <Form.Group controlId="firstName" as={Col}>
               <Form.Label>First name</Form.Label>

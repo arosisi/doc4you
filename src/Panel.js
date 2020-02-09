@@ -5,6 +5,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Row from "react-bootstrap/Row";
 
 import AvailabilityForm from "./AvailabilityForm";
+import SelectionForm from "./SelectionForm";
 import strings from "./strings";
 
 class Panel extends React.Component {
@@ -12,7 +13,7 @@ class Panel extends React.Component {
 
   render() {
     const { title } = this.state;
-    const { coords } = this.props;
+    const { coords, messageSelected, onSelectTimeSlot } = this.props;
     return (
       <Container fluid={true}>
         <Row style={{ margin: "10px 0 20px 0", alignItems: "center" }}>
@@ -38,6 +39,12 @@ class Panel extends React.Component {
           </DropdownButton>
         </Row>
         {title === strings.DOCTOR && <AvailabilityForm coords={coords} />}
+        {title === strings.PATIENT && (
+          <SelectionForm
+            message={messageSelected}
+            onSelect={onSelectTimeSlot}
+          />
+        )}
       </Container>
     );
   }

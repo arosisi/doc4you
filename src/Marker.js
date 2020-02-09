@@ -4,7 +4,7 @@ import Popover from "react-bootstrap/Popover";
 
 class Marker extends React.Component {
   render() {
-    const { color, info } = this.props;
+    const { color, message, onSelect } = this.props;
     const {
       firstName,
       lastName,
@@ -12,7 +12,7 @@ class Marker extends React.Component {
       address2,
       phoneNumber,
       availability
-    } = info;
+    } = message;
 
     const popover = (
       <Popover id="popover-basic">
@@ -41,6 +41,7 @@ class Marker extends React.Component {
             background: color,
             cursor: "pointer"
           }}
+          onClick={onSelect}
         />
       </OverlayTrigger>
     );
