@@ -22,7 +22,7 @@ class SelectionForm extends React.Component {
     );
     messageToSend.destinationName = strings.DESTINATION;
     messaging.send(messageToSend);
-    onSelect();
+    this.setState({ timeSlot: "" }, onSelect);
   };
 
   render() {

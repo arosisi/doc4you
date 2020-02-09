@@ -48,7 +48,7 @@ class App extends React.Component {
     if (messageObj.timeSlot) {
       // message sent from a patient
       // no new availability will be added
-      // instead, an exisiting availability will lost a timeslot
+      // instead, an exisiting availability will lose a timeslot
       // if it has no timeslots afterwards, it will be deleted
       this.setState({
         messages: messages
