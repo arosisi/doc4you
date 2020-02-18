@@ -1,5 +1,5 @@
 {
-  "DOCTOR": "Doctor",
-  "PATIENT": "Patient",
+  "DOCTOR": "doctor",
+  "PATIENT": "patient",
   "DESTINATION": "Ottawa"
 }

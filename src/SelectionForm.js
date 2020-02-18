@@ -7,13 +7,17 @@ import Form from "react-bootstrap/Form";
 
 import strings from "./strings";
 
+// TODO
+// replace Solace Cloud with Socket.io
+// https://www.freecodecamp.org/news/how-to-create-a-realtime-app-using-socket-io-react-node-mongodb-a10c4a1ab676
+
 class SelectionForm extends React.Component {
   state = { timeSlot: "" };
 
   submit = event => {
+    event.preventDefault();
     const { timeSlot } = this.state;
     const { message, onSelect } = this.props;
-    event.preventDefault();
     let messageToSend = new Paho.Message(
       JSON.stringify({
         ...message,
@@ -32,7 +36,7 @@ class SelectionForm extends React.Component {
       <Container style={{ margin: "20px 0 20px 0" }}>
         {message ? (
           <Form onSubmit={this.submit}>
-            <Form.Group controlId="name">
+            <Form.Group controlId='name'>
               <Form.Label>Doctor</Form.Label>
               <Form.Control
                 value={`${message.firstName} ${message.lastName}`}
@@ -40,25 +44,20 @@ class SelectionForm extends React.Component {
               />
             </Form.Group>
 
-            <Form.Group controlId="address">
+            <Form.Group controlId='address'>
               <Form.Label>Address</Form.Label>
-              <Form.Control
-                value={`${message.address2 ? message.address2 + "-" : ""}${
-                  message.address1
-                }`}
-                disabled
-              />
+              <Form.Control value={message.address} disabled />
             </Form.Group>
 
-            <Form.Group controlId="phoneNumber">
+            <Form.Group controlId='phoneNumber'>
               <Form.Label>Phone number</Form.Label>
               <Form.Control value={message.phoneNumber} disabled />
             </Form.Group>
 
-            <Form.Group controlId="availability">
+            <Form.Group controlId='availability'>
               <Form.Label>Select a timeslot</Form.Label>
               <Form.Control
-                as="select"
+                as='select'
                 value={timeSlot || message.availability[0]}
                 onChange={event => {
                   this.setState({
@@ -72,7 +71,7 @@ class SelectionForm extends React.Component {
               </Form.Control>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant='primary' type='submit'>
               Submit
             </Button>
           </Form>

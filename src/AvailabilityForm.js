@@ -19,12 +19,15 @@ const timeSlots = [
   "4pm-5pm"
 ];
 
+// TODO
+// replace Solace Cloud with Socket.io
+// https://www.freecodecamp.org/news/how-to-create-a-realtime-app-using-socket-io-react-node-mongodb-a10c4a1ab676
+
 class AvailabilityForm extends React.Component {
   state = {
     firstName: "",
     lastName: "",
-    address1: "",
-    address2: "",
+    address: "",
     phoneNumber: "",
     availability: []
   };
@@ -45,18 +48,18 @@ class AvailabilityForm extends React.Component {
     const {
       firstName,
       lastName,
-      address1,
+      address,
       phoneNumber,
       availability
     } = this.state;
     return (
-      firstName && lastName && address1 && phoneNumber && availability.length
+      firstName && lastName && address && phoneNumber && availability.length
     );
   };
 
   submit = event => {
-    const { coords } = this.props;
     event.preventDefault();
+    const { coords } = this.props;
     let message = new Paho.Message(
       JSON.stringify({ ...this.state, ...coords })
     );
@@ -69,8 +72,7 @@ class AvailabilityForm extends React.Component {
     this.setState({
       firstName: "",
       lastName: "",
-      address1: "",
-      address2: "",
+      address: "",
       phoneNumber: "",
       availability: []
     });
@@ -79,8 +81,7 @@ class AvailabilityForm extends React.Component {
     const {
       firstName,
       lastName,
-      address1,
-      address2,
+      address,
       phoneNumber,
       availability
     } = this.state;
@@ -88,7 +89,7 @@ class AvailabilityForm extends React.Component {
       <Container style={{ margin: "20px 0 20px 0" }}>
         <Form onSubmit={this.submit}>
           <Form.Row>
-            <Form.Group controlId="firstName" as={Col}>
+            <Form.Group controlId='firstName' as={Col}>
               <Form.Label>First name</Form.Label>
               <Form.Control
                 value={firstName}
@@ -97,7 +98,7 @@ class AvailabilityForm extends React.Component {
                 }
               />
             </Form.Group>
-            <Form.Group controlId="lastName" as={Col}>
+            <Form.Group controlId='lastName' as={Col}>
               <Form.Label>Last name</Form.Label>
               <Form.Control
                 value={lastName}
@@ -108,46 +109,33 @@ class AvailabilityForm extends React.Component {
             </Form.Group>
           </Form.Row>
 
-          <Form.Group controlId="address1">
+          <Form.Group controlId='address'>
             <Form.Label>Address</Form.Label>
             <Form.Control
-              placeholder="1234 Main St"
-              value={address1}
+              value={address}
               onChange={event =>
-                this.setState({ address1: event.currentTarget.value })
+                this.setState({ address: event.currentTarget.value })
               }
             />
           </Form.Group>
 
-          <Form.Group controlId="address2">
-            <Form.Label>Address 2</Form.Label>
-            <Form.Control
-              placeholder="Apartment, studio, or floor"
-              value={address2}
-              onChange={event =>
-                this.setState({ address2: event.currentTarget.value })
-              }
-            />
-          </Form.Group>
-
-          <Form.Group controlId="phoneNumber">
+          <Form.Group controlId='phoneNumber'>
             <Form.Label>Phone number</Form.Label>
             <Form.Control
-              placeholder="Enter phone number"
               value={phoneNumber}
               onChange={event =>
                 this.setState({ phoneNumber: event.currentTarget.value })
               }
             />
-            <Form.Text className="text-muted">
+            <Form.Text className='text-muted'>
               Patients may call this number to book an appointment.
             </Form.Text>
           </Form.Group>
 
-          <Form.Group controlId="availability">
+          <Form.Group controlId='availability'>
             <Form.Label>Select your availability</Form.Label>
             <Form.Control
-              as="select"
+              as='select'
               multiple
               value={availability}
               onChange={event => {
@@ -165,8 +153,8 @@ class AvailabilityForm extends React.Component {
           </Form.Group>
 
           <Button
-            variant="primary"
-            type="submit"
+            variant='primary'
+            type='submit'
             disabled={!this.isFormComplete()}
           >
             Submit
