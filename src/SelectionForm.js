@@ -7,10 +7,6 @@ import Form from "react-bootstrap/Form";
 
 import strings from "./strings";
 
-// TODO
-// replace Solace Cloud with Socket.io
-// https://www.freecodecamp.org/news/how-to-create-a-realtime-app-using-socket-io-react-node-mongodb-a10c4a1ab676
-
 class SelectionForm extends React.Component {
   state = { timeSlot: "" };
 

@@ -5,7 +5,7 @@ export default {
   password: privateInfo.solace_connection_password,
   invocationContext: {
     host: privateInfo.solace_host,
-    port: 8443,
+    port: 20745,
     clientId: ""
   },
   timeout: 3,

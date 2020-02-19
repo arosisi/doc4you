@@ -11,11 +11,6 @@ import Marker from "./Marker";
 import strings from "./strings";
 import privateInfo from "./privateInfo";
 
-// TODO
-// replace Solace Cloud with Socket.io
-// https://www.freecodecamp.org/news/how-to-create-a-realtime-app-using-socket-io-react-node-mongodb-a10c4a1ab676
-// maybe refactor out GoogleMapReact too
-
 class MainBoard extends React.Component {
   state = {
     loading: true,
