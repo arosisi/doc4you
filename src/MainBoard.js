@@ -103,6 +103,7 @@ class MainBoard extends React.Component {
       loading,
       connected,
       coords,
+      zoom,
       messages,
       messageSelected
     } = this.state;
@@ -123,23 +124,27 @@ class MainBoard extends React.Component {
                 }
               />
             </Col>
-            <Col style={{ height: "100vh" }}>
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: privateInfo.google_api_key }}
-                defaultCenter={this.state.coords}
-                defaultZoom={this.state.zoom}
-              >
-                {messages.map(message => (
-                  <Marker
-                    key={JSON.stringify(message)}
-                    lat={message.lat}
-                    lng={message.lng}
-                    color='white'
-                    message={message}
-                    onSelect={() => this.setState({ messageSelected: message })}
-                  />
-                ))}
-              </GoogleMapReact>
+            <Col style={{ height: "100vh", width: "100%" }}>
+              {coords && zoom && (
+                <GoogleMapReact
+                  bootstrapURLKeys={{ key: privateInfo.google_api_key }}
+                  defaultCenter={coords}
+                  defaultZoom={zoom}
+                >
+                  {messages.map(message => (
+                    <Marker
+                      key={JSON.stringify(message)}
+                      lat={message.lat}
+                      lng={message.lng}
+                      color='white'
+                      message={message}
+                      onSelect={() =>
+                        this.setState({ messageSelected: message })
+                      }
+                    />
+                  ))}
+                </GoogleMapReact>
+              )}
             </Col>
           </Row>
         )}
