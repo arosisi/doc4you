@@ -5,6 +5,8 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 
+import privateInfo from "./privateInfo";
+
 class LoginForm extends React.Component {
   state = { emailAddress: "", isSubmitting: false, showAlert: false };
 
@@ -13,7 +15,7 @@ class LoginForm extends React.Component {
     const { emailAddress } = this.state;
     const { role, onSubmit } = this.props;
     this.setState({ isSubmitting: true }, () =>
-      fetch("http://localhost:9000/users", {
+      fetch(privateInfo.users_api_endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ emailAddress, role, action: "log in" })

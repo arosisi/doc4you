@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 
 import strings from "./strings";
+import privateInfo from "./privateInfo";
 
 class RegistrationForm extends React.Component {
   state = {
@@ -50,7 +51,7 @@ class RegistrationForm extends React.Component {
     } = this.state;
     const { role, onSubmit } = this.props;
     this.setState({ isSubmitting: true }, () =>
-      fetch("http://localhost:9000/users", {
+      fetch(privateInfo.users_api_endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -5,6 +5,8 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 
+import privateInfo from "./privateInfo";
+
 class VerificationForm extends React.Component {
   state = { verificationCode: "", isSubmitting: false, showAlert: false };
 
@@ -13,7 +15,7 @@ class VerificationForm extends React.Component {
     const { verificationCode } = this.state;
     const { emailAddress, onSubmit } = this.props;
     this.setState({ isSubmitting: true }, () =>
-      fetch("http://localhost:9000/users", {
+      fetch(privateInfo.users_api_endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
