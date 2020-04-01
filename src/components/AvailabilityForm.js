@@ -1,12 +1,12 @@
 import React from "react";
-import messaging from "./Messaging";
+import messaging from "../Messaging";
 import Paho from "paho-mqtt";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 
-import strings from "./strings";
+import strings from "../strings";
 
 const timeSlots = [
   "9am-10am",

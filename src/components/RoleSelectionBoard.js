@@ -5,11 +5,11 @@ import Row from "react-bootstrap/Row";
 import _ from "lodash";
 
 import RoleIcon from "./RoleIcon";
-import strings from "./strings";
+import strings from "../strings";
 
 class RoleSelectionBoard extends React.Component {
   render() {
-    const { setRole } = this.props;
+    const { history } = this.props;
     return (
       <Container style={{ marginTop: 50 }}>
         <Row>
@@ -18,14 +18,14 @@ class RoleSelectionBoard extends React.Component {
               src='doctor.png'
               caption={_.capitalize(strings.DOCTOR)}
               style={{ float: "right" }}
-              onClick={() => setRole(strings.DOCTOR)}
+              onClick={() => history.push(strings.DOCTOR)}
             />
           </Col>
           <Col xs={6}>
             <RoleIcon
               src='patient.png'
               caption={_.capitalize(strings.PATIENT)}
-              onClick={() => setRole(strings.PATIENT)}
+              onClick={() => history.push(strings.PATIENT)}
             />
           </Col>
         </Row>

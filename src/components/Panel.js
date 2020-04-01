@@ -4,39 +4,30 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { MdKeyboardBackspace } from "react-icons/md";
 
-import Registration from "./Registration";
-import Login from "./Login";
+import Registration from "./registration/Registration";
+import Login from "./login/Login";
 import AvailabilityForm from "./AvailabilityForm";
 import SelectionForm from "./SelectionForm";
-import strings from "./strings";
-
-// TODO
-// Panel needs access to user _id, which VerificationForm can get from backend
-// MainBoard may need access to user _id too
+import withConsumer from "../withConsumer";
+import strings from "../strings";
 
 class Panel extends React.Component {
   state = {
     isRegistering: false,
     isLoggingIn: false,
-    isLoggedIn: false,
     isUsingAnonymously: true
   };
 
-  logInUser = () =>
-    this.setState({
-      isRegistering: false,
-      isLoggingIn: false,
-      isLoggedIn: true
-    });
-
   render() {
+    const { isRegistering, isLoggingIn, isUsingAnonymously } = this.state;
     const {
-      isRegistering,
-      isLoggingIn,
-      isLoggedIn,
-      isUsingAnonymously
-    } = this.state;
-    const { role, coords, messageSelected, onSelectTimeSlot } = this.props;
+      context,
+      role,
+      coords,
+      messageSelected,
+      onSelectTimeSlot
+    } = this.props;
+    const isLoggedIn = !!context.user;
     return (
       <Container fluid={true}>
         <Row style={{ margin: 15 }}>
@@ -84,7 +75,12 @@ class Panel extends React.Component {
             <Button
               variant='outline-success'
               onClick={() => {
-                // TODO
+                context.logOut();
+                this.setState({
+                  isRegistering: false,
+                  isLoggingIn: false,
+                  isUsingAnonymously: true
+                });
               }}
             >
               Log Out
@@ -96,7 +92,7 @@ class Panel extends React.Component {
             You are using this application as guest.
           </p>
         )}
-        {(isRegistering || isLoggingIn) && (
+        {(isRegistering || isLoggingIn) && !isLoggedIn && (
           <p style={{ marginLeft: 15, color: "#28a745" }}>
             <MdKeyboardBackspace
               style={{ fontSize: 18, cursor: "pointer" }}
@@ -112,12 +108,16 @@ class Panel extends React.Component {
           </p>
         )}
         {isLoggedIn && (
-          <p style={{ marginLeft: 15, color: "#28a745" }}>You are logged in.</p>
+          <p style={{ marginLeft: 15, color: "#28a745" }}>
+            Hello {context.user.firstName}!
+          </p>
         )}
-        {isRegistering && (
+        {isRegistering && !isLoggedIn && (
           <Registration role={role} logInUser={this.logInUser} />
         )}
-        {isLoggingIn && <Login role={role} logInUser={this.logInUser} />}
+        {isLoggingIn && !isLoggedIn && (
+          <Login role={role} logInUser={this.logInUser} />
+        )}
         {(isLoggedIn || isUsingAnonymously) && role === strings.DOCTOR && (
           <AvailabilityForm coords={coords} />
         )}
@@ -132,4 +132,4 @@ class Panel extends React.Component {
   }
 }
 
-export default Panel;
+export default withConsumer(Panel);

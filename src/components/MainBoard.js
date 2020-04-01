@@ -1,5 +1,5 @@
 import React from "react";
-import messaging from "./Messaging";
+import messaging from "../Messaging";
 import GoogleMapReact from "google-map-react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -8,8 +8,8 @@ import Spinner from "react-bootstrap/Spinner";
 
 import Panel from "./Panel";
 import Marker from "./Marker";
-import strings from "./strings";
-import privateInfo from "./privateInfo";
+import strings from "../strings";
+import privateInfo from "../privateInfo";
 
 class MainBoard extends React.Component {
   state = {

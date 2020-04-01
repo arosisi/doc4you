@@ -1,7 +1,7 @@
 import React from "react";
 
 import LoginForm from "./LoginForm";
-import VerificationForm from "./VerificationForm";
+import VerificationForm from "../common/VerificationForm";
 
 class Login extends React.Component {
   state = { emailAddress: "", isVerifying: false };
@@ -11,15 +11,11 @@ class Login extends React.Component {
 
   render() {
     const { emailAddress, isVerifying } = this.state;
-    const { role, logInUser } = this.props;
+    const { role } = this.props;
     return !isVerifying ? (
       <LoginForm role={role} onSubmit={this.switchToVerification} />
     ) : (
-      <VerificationForm
-        emailAddress={emailAddress}
-        onSubmit={logInUser}
-        action='log in'
-      />
+      <VerificationForm emailAddress={emailAddress} action='log in' />
     );
   }
 }

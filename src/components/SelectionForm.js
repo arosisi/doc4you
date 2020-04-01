@@ -1,11 +1,11 @@
 import React from "react";
-import messaging from "./Messaging";
+import messaging from "../Messaging";
 import Paho from "paho-mqtt";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 
-import strings from "./strings";
+import strings from "../strings";
 
 class SelectionForm extends React.Component {
   state = { timeSlot: "" };

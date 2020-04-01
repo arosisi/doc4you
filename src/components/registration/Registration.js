@@ -1,7 +1,7 @@
 import React from "react";
 
 import RegistrationForm from "./RegistrationForm";
-import VerificationForm from "./VerificationForm";
+import VerificationForm from "../common/VerificationForm";
 
 class Registration extends React.Component {
   state = { emailAddress: "", isVerifying: false };
@@ -11,15 +11,11 @@ class Registration extends React.Component {
 
   render() {
     const { emailAddress, isVerifying } = this.state;
-    const { role, logInUser } = this.props;
+    const { role } = this.props;
     return !isVerifying ? (
       <RegistrationForm role={role} onSubmit={this.switchToVerification} />
     ) : (
-      <VerificationForm
-        emailAddress={emailAddress}
-        onSubmit={logInUser}
-        action='register'
-      />
+      <VerificationForm emailAddress={emailAddress} action='register' />
     );
   }
 }

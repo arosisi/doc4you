@@ -1,17 +1,24 @@
 import React from "react";
+import { Route, Switch } from "react-router-dom";
 
-import RoleSelectionBoard from "./RoleSelectionBoard";
-import MainBoard from "./MainBoard";
+import RoleSelectionBoard from "./components/RoleSelectionBoard";
+import MainBoard from "./components/MainBoard";
+import strings from "./strings";
 
 class App extends React.Component {
-  state = { role: "" };
-
   render() {
-    const { role } = this.state;
-    return !role ? (
-      <RoleSelectionBoard setRole={role => this.setState({ role })} />
-    ) : (
-      <MainBoard role={role} />
+    return (
+      <Switch>
+        <Route exact path='/' component={RoleSelectionBoard} />
+        <Route
+          path='/doctor'
+          render={props => <MainBoard {...props} role={strings.DOCTOR} />}
+        />
+        <Route
+          path='/patient'
+          render={props => <MainBoard {...props} role={strings.PATIENT} />}
+        />
+      </Switch>
     );
   }
 }
