@@ -81,6 +81,7 @@ class AvailabilityForm extends React.Component {
       phoneNumber,
       availability
     } = this.state;
+    const { connected } = this.props;
     return (
       <Container style={{ margin: "20px 0 20px 0" }}>
         <Form onSubmit={this.submit}>
@@ -151,7 +152,7 @@ class AvailabilityForm extends React.Component {
           <Button
             variant='primary'
             type='submit'
-            disabled={!this.isFormComplete()}
+            disabled={!connected || !this.isFormComplete()}
           >
             Submit
           </Button>

@@ -2,14 +2,14 @@ import React from "react";
 import { BrowserRouter } from "react-router-dom";
 
 import AppProvider from "./AppProvider";
-import App from "./App";
+import AppRouter from "./AppRouter";
 
 class AppWrapper extends React.Component {
   render() {
     return (
       <AppProvider>
         <BrowserRouter>
-          <App />
+          <AppRouter />
         </BrowserRouter>
       </AppProvider>
     );

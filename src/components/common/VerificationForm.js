@@ -22,7 +22,8 @@ class VerificationForm extends React.Component {
           emailAddress,
           verificationCode,
           action: "verify"
-        })
+        }),
+        credentials: "include"
       })
         .then(response => response.json())
         .then(response => {

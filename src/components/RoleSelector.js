@@ -7,7 +7,7 @@ import _ from "lodash";
 import RoleIcon from "./RoleIcon";
 import strings from "../strings";
 
-class RoleSelectionBoard extends React.Component {
+class RoleSelector extends React.Component {
   render() {
     const { history } = this.props;
     return (
@@ -34,4 +34,4 @@ class RoleSelectionBoard extends React.Component {
   }
 }
 
-export default RoleSelectionBoard;
+export default RoleSelector;

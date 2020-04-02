@@ -22,6 +22,7 @@ class Panel extends React.Component {
     const { isRegistering, isLoggingIn, isUsingAnonymously } = this.state;
     const {
       context,
+      connected,
       role,
       coords,
       messageSelected,
@@ -119,7 +120,7 @@ class Panel extends React.Component {
           <Login role={role} logInUser={this.logInUser} />
         )}
         {(isLoggedIn || isUsingAnonymously) && role === strings.DOCTOR && (
-          <AvailabilityForm coords={coords} />
+          <AvailabilityForm connected={connected} coords={coords} />
         )}
         {(isLoggedIn || isUsingAnonymously) && role === strings.PATIENT && (
           <SelectionForm
