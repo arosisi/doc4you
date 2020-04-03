@@ -146,7 +146,7 @@ class App extends React.Component {
       messages,
       messageSelected
     } = this.state;
-    const { classes, role } = this.props;
+    const { context, classes, role } = this.props;
     return (
       <Container fluid={true}>
         <Row>
@@ -184,6 +184,7 @@ class App extends React.Component {
               />
             ) : (
               <Panel
+                context={context}
                 connected={connected}
                 role={role}
                 coords={coords}

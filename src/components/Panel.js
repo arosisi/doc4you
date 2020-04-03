@@ -7,7 +7,6 @@ import Registration from "./registration/Registration";
 import Login from "./login/Login";
 import AvailabilityForm from "./AvailabilityForm";
 import SelectionForm from "./SelectionForm";
-import withConsumer from "../withConsumer";
 import strings from "../strings";
 import privateInfo from "../privateInfo";
 
@@ -111,7 +110,11 @@ class Panel extends React.Component {
           <Login role={role} logInUser={this.logInUser} />
         )}
         {isLoggedIn && role === strings.DOCTOR && (
-          <AvailabilityForm connected={connected} coords={coords} />
+          <AvailabilityForm
+            context={context}
+            connected={connected}
+            coords={coords}
+          />
         )}
         {isLoggedIn && role === strings.PATIENT && (
           <SelectionForm
@@ -125,4 +128,4 @@ class Panel extends React.Component {
   }
 }
 
-export default withConsumer(Panel);
+export default Panel;
