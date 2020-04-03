@@ -149,13 +149,20 @@ class AvailabilityForm extends React.Component {
             </Form.Control>
           </Form.Group>
 
-          <Button
-            variant='primary'
-            type='submit'
-            disabled={!connected || !this.isFormComplete()}
-          >
-            Submit
-          </Button>
+          <Form.Group controlId='submit'>
+            <Button
+              variant='primary'
+              type='submit'
+              disabled={!connected || !this.isFormComplete()}
+            >
+              Submit
+            </Button>
+            {!connected && (
+              <Form.Text className='text-danger'>
+                Something went wrong. Please try again later.
+              </Form.Text>
+            )}
+          </Form.Group>
         </Form>
       </Container>
     );

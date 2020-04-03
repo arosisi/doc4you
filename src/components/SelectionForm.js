@@ -67,9 +67,16 @@ class SelectionForm extends React.Component {
               </Form.Control>
             </Form.Group>
 
-            <Button variant='primary' type='submit' disabled={!connected}>
-              Submit
-            </Button>
+            <Form.Group controlId='submit'>
+              <Button variant='primary' type='submit' disabled={!connected}>
+                Submit
+              </Button>
+              {!connected && (
+                <Form.Text className='text-danger'>
+                  Something went wrong. Please try again later.
+                </Form.Text>
+              )}
+            </Form.Group>
           </Form>
         ) : (
           <div>Click on a dot on the map to see doctor availability.</div>
