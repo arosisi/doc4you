@@ -2,7 +2,6 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import { MdKeyboardBackspace } from "react-icons/md";
 
 import Registration from "./registration/Registration";
 import Login from "./login/Login";
@@ -15,8 +14,7 @@ import privateInfo from "../privateInfo";
 class Panel extends React.Component {
   state = {
     isRegistering: false,
-    isLoggingIn: false,
-    isUsingAnonymously: true
+    isLoggingIn: false
   };
 
   logOut = () => {
@@ -36,14 +34,15 @@ class Panel extends React.Component {
   };
 
   render() {
-    const { isRegistering, isLoggingIn, isUsingAnonymously } = this.state;
+    const { isRegistering, isLoggingIn } = this.state;
     const {
       context,
       connected,
       role,
       coords,
       messageSelected,
-      onSelectTimeSlot
+      onSubmitTimeSlot,
+      onLogOut
     } = this.props;
     const isLoggedIn = !!context.user;
     return (
@@ -54,11 +53,7 @@ class Panel extends React.Component {
               variant='outline-success'
               style={{ marginRight: 10 }}
               onClick={() =>
-                this.setState({
-                  isRegistering: true,
-                  isLoggingIn: false,
-                  isUsingAnonymously: false
-                })
+                this.setState({ isRegistering: true, isLoggingIn: false })
               }
             >
               Register
@@ -68,11 +63,7 @@ class Panel extends React.Component {
             <Button
               variant='outline-success'
               onClick={() =>
-                this.setState({
-                  isLoggingIn: true,
-                  isRegistering: false,
-                  isUsingAnonymously: false
-                })
+                this.setState({ isLoggingIn: true, isRegistering: false })
               }
             >
               Log In
@@ -93,37 +84,19 @@ class Panel extends React.Component {
             <Button
               variant='outline-success'
               onClick={() => {
-                this.logOut();
-                context.logOut();
-                this.setState({
-                  isRegistering: false,
-                  isLoggingIn: false,
-                  isUsingAnonymously: true
-                });
+                this.logOut(); // clear cookie
+                context.logOut(); // remove user
+                onLogOut(); // remove message selection
+                this.setState({ isRegistering: false, isLoggingIn: false });
               }}
             >
               Log Out
             </Button>
           )}
         </Row>
-        {!isRegistering && !isLoggingIn && !isLoggedIn && (
+        {!isLoggedIn && (
           <p style={{ marginLeft: 15, color: "#28a745" }}>
-            You are using this application as guest.
-          </p>
-        )}
-        {(isRegistering || isLoggingIn) && !isLoggedIn && (
-          <p style={{ marginLeft: 15, color: "#28a745" }}>
-            <MdKeyboardBackspace
-              style={{ fontSize: 18, cursor: "pointer" }}
-              onClick={() =>
-                this.setState({
-                  isRegistering: false,
-                  isLoggingIn: false,
-                  isUsingAnonymously: true
-                })
-              }
-            />{" "}
-            Go back to using as guest
+            You need to log in to use the application.
           </p>
         )}
         {isLoggedIn && (
@@ -137,13 +110,14 @@ class Panel extends React.Component {
         {isLoggingIn && !isLoggedIn && (
           <Login role={role} logInUser={this.logInUser} />
         )}
-        {(isLoggedIn || isUsingAnonymously) && role === strings.DOCTOR && (
+        {isLoggedIn && role === strings.DOCTOR && (
           <AvailabilityForm connected={connected} coords={coords} />
         )}
-        {(isLoggedIn || isUsingAnonymously) && role === strings.PATIENT && (
+        {isLoggedIn && role === strings.PATIENT && (
           <SelectionForm
+            connected={connected}
             message={messageSelected}
-            onSelect={onSelectTimeSlot}
+            onSubmit={onSubmitTimeSlot}
           />
         )}
       </Container>

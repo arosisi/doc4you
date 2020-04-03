@@ -13,7 +13,7 @@ class SelectionForm extends React.Component {
   submit = event => {
     event.preventDefault();
     const { timeSlot } = this.state;
-    const { message, onSelect } = this.props;
+    const { message, onSubmit } = this.props;
     let messageToSend = new Paho.Message(
       JSON.stringify({
         ...message,
@@ -22,12 +22,12 @@ class SelectionForm extends React.Component {
     );
     messageToSend.destinationName = strings.DESTINATION;
     messaging.send(messageToSend);
-    this.setState({ timeSlot: "" }, onSelect);
+    this.setState({ timeSlot: "" }, onSubmit);
   };
 
   render() {
     const { timeSlot } = this.state;
-    const { message } = this.props;
+    const { connected, message } = this.props;
     return (
       <Container style={{ margin: "20px 0 20px 0" }}>
         {message ? (
@@ -67,7 +67,7 @@ class SelectionForm extends React.Component {
               </Form.Control>
             </Form.Group>
 
-            <Button variant='primary' type='submit'>
+            <Button variant='primary' type='submit' disabled={!connected}>
               Submit
             </Button>
           </Form>

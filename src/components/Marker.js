@@ -25,7 +25,12 @@ class Marker extends React.Component {
     );
 
     return (
-      <OverlayTrigger trigger='click' placement='right' overlay={popover}>
+      <OverlayTrigger
+        rootClose
+        trigger='click'
+        placement='auto'
+        overlay={popover}
+      >
         <div
           style={{
             height: 20,

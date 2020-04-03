@@ -21,6 +21,7 @@ const styles = {
 
 class App extends React.Component {
   state = {
+    windowWidth: window.innerWidth,
     loading: true,
     connected: false,
     messages: [],
@@ -29,6 +30,9 @@ class App extends React.Component {
 
   componentDidMount() {
     const { context } = this.props;
+
+    window.addEventListener("resize", this.resize);
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position =>
         this.setState(
@@ -50,8 +54,14 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener("resize", this.resize);
     messaging.disconnect();
   }
+
+  resize = ({ target }) =>
+    this.setState({
+      windowWidth: target.innerWidth
+    });
 
   authenticate = () => {
     const { context, role } = this.props;
@@ -128,6 +138,7 @@ class App extends React.Component {
 
   render() {
     const {
+      windowWidth,
       loading,
       connected,
       coords,
@@ -139,26 +150,12 @@ class App extends React.Component {
     return (
       <Container fluid={true}>
         <Row>
-          <Col md={12} lg={5}>
-            {loading ? (
-              <Spinner
-                className={classes.spinner}
-                animation='border'
-                variant='primary'
-              />
-            ) : (
-              <Panel
-                connected={connected}
-                role={role}
-                coords={coords}
-                messageSelected={messageSelected}
-                onSelectTimeSlot={() =>
-                  this.setState({ messageSelected: null })
-                }
-              />
-            )}
-          </Col>
-          <Col style={{ height: "100vh", width: "100%" }}>
+          <Col
+            style={{
+              height: windowWidth < 992 ? "50vh" : "100vh",
+              width: "100%"
+            }}
+          >
             {coords && zoom && (
               <GoogleMapReact
                 bootstrapURLKeys={{ key: privateInfo.google_api_key }}
@@ -176,6 +173,26 @@ class App extends React.Component {
                   />
                 ))}
               </GoogleMapReact>
+            )}
+          </Col>
+          <Col md={12} lg={5}>
+            {loading ? (
+              <Spinner
+                className={classes.spinner}
+                animation='border'
+                variant='primary'
+              />
+            ) : (
+              <Panel
+                connected={connected}
+                role={role}
+                coords={coords}
+                messageSelected={messageSelected}
+                onSubmitTimeSlot={() =>
+                  this.setState({ messageSelected: null })
+                }
+                onLogOut={() => this.setState({ messageSelected: null })}
+              />
             )}
           </Col>
         </Row>
