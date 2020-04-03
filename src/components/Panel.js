@@ -10,12 +10,29 @@ import AvailabilityForm from "./AvailabilityForm";
 import SelectionForm from "./SelectionForm";
 import withConsumer from "../withConsumer";
 import strings from "../strings";
+import privateInfo from "../privateInfo";
 
 class Panel extends React.Component {
   state = {
     isRegistering: false,
     isLoggingIn: false,
     isUsingAnonymously: true
+  };
+
+  logOut = () => {
+    fetch(privateInfo.users_api_endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "log out" }),
+      credentials: "include"
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          console.log("Cookie cleared!");
+        }
+      })
+      .catch(error => console.log("Unable to connect to API users.", error));
   };
 
   render() {
@@ -76,6 +93,7 @@ class Panel extends React.Component {
             <Button
               variant='outline-success'
               onClick={() => {
+                this.logOut();
                 context.logOut();
                 this.setState({
                   isRegistering: false,

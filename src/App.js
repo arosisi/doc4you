@@ -15,7 +15,7 @@ import privateInfo from "./privateInfo";
 
 const styles = {
   spinner: {
-    marginTop: 20
+    margin: "15px 0"
   }
 };
 
@@ -28,6 +28,7 @@ class App extends React.Component {
   };
 
   componentDidMount() {
+    const { context } = this.props;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position =>
         this.setState(
@@ -39,6 +40,7 @@ class App extends React.Component {
             zoom: 11
           },
           () => {
+            context.logOut();
             this.authenticate();
             this.connect();
           }
