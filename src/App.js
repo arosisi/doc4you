@@ -1,14 +1,13 @@
 import React from "react";
 import messaging from "./Messaging";
-import GoogleMapReact from "google-map-react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
 import { withStyles } from "@material-ui/styles";
 
+import Map from "./components/map/Map";
 import Panel from "./components/Panel";
-import Marker from "./components/Marker";
 import withConsumer from "./withConsumer";
 import strings from "./strings";
 import privateInfo from "./privateInfo";
@@ -158,22 +157,14 @@ class App extends React.Component {
             }}
           >
             {coords && zoom && (
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: privateInfo.google_api_key }}
-                defaultCenter={coords}
-                defaultZoom={zoom}
-              >
-                {messages.map(message => (
-                  <Marker
-                    key={JSON.stringify(message)}
-                    lat={message.lat}
-                    lng={message.lng}
-                    color='white'
-                    message={message}
-                    onSelect={() => this.setState({ messageSelected: message })}
-                  />
-                ))}
-              </GoogleMapReact>
+              <Map
+                coords={coords}
+                zoom={zoom}
+                messages={messages}
+                onSelect={message =>
+                  this.setState({ messageSelected: message })
+                }
+              />
             )}
           </Col>
           <Col md={12} lg={5}>
