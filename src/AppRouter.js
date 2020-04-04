@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import RoleSelector from "./components/RoleSelector";
-import App from "./App";
+import AppProviderWrapper from "./AppProviderWrapper";
 import strings from "./strings";
 
 class AppRouter extends React.Component {
@@ -12,11 +12,15 @@ class AppRouter extends React.Component {
         <Route exact path='/' component={RoleSelector} />
         <Route
           path='/doctor'
-          render={props => <App {...props} role={strings.DOCTOR} />}
+          render={props => (
+            <AppProviderWrapper {...props} role={strings.DOCTOR} />
+          )}
         />
         <Route
           path='/patient'
-          render={props => <App {...props} role={strings.PATIENT} />}
+          render={props => (
+            <AppProviderWrapper {...props} role={strings.PATIENT} />
+          )}
         />
       </Switch>
     );

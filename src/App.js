@@ -29,8 +29,6 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const { context } = this.props;
-
     window.addEventListener("resize", this.resize);
 
     if (navigator.geolocation) {
@@ -44,7 +42,6 @@ class App extends React.Component {
             zoom: 11
           },
           () => {
-            context.logOut();
             this.authenticate();
             this.connect();
           }
@@ -56,6 +53,7 @@ class App extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.resize);
     messaging.disconnect();
+    messaging.unregister();
   }
 
   resize = ({ target }) =>
@@ -93,6 +91,9 @@ class App extends React.Component {
         console.log("Succesfully connected to Solace Cloud.", response);
         messaging.subscribe(strings.DESTINATION);
         messaging.register(this.handleMessage);
+        messaging.registerConnectionLostCallback(() =>
+          this.setState({ connected: false })
+        );
         this.setState({ connected: true });
       })
       .catch(error => {
