@@ -77,7 +77,7 @@ class LoginForm extends React.Component {
                   dismissible
                   onClose={() => this.setState({ showAlert: false })}
                 >
-                  Invalid email address.
+                  Something went wrong. Please try again later.
                 </Alert>
               )}
             </Form>
