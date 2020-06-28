@@ -62,7 +62,7 @@ class App extends React.Component {
     });
 
   getPreviousMessages = () => {
-    fetch(privateInfo.availabilities_api_endpoint, {
+    fetch(privateInfo[process.env.NODE_ENV].availabilities_api_endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "get availabilities" })
@@ -82,7 +82,7 @@ class App extends React.Component {
 
   authenticate = () => {
     const { context, role } = this.props;
-    fetch(privateInfo.users_api_endpoint, {
+    fetch(privateInfo[process.env.NODE_ENV].users_api_endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "authenticate" }),

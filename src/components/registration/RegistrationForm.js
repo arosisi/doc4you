@@ -35,7 +35,7 @@ class RegistrationForm extends React.Component {
   submit = ({ firstName, lastName, address, phoneNumber, emailAddress }) => {
     const { role, onSubmit } = this.props;
     this.setState({ isSubmitting: true }, () =>
-      fetch(privateInfo.users_api_endpoint, {
+      fetch(privateInfo[process.env.NODE_ENV].users_api_endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

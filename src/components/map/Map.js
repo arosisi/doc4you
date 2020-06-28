@@ -9,7 +9,9 @@ class Map extends React.Component {
     const { coords, zoom, messages, onSelect } = this.props;
     return (
       <GoogleMapReact
-        bootstrapURLKeys={{ key: privateInfo.google_api_key }}
+        bootstrapURLKeys={{
+          key: privateInfo[process.env.NODE_ENV].google_api_key
+        }}
         defaultCenter={coords}
         defaultZoom={zoom}
       >
