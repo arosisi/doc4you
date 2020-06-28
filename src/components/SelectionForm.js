@@ -10,11 +10,12 @@ import strings from "../strings";
 
 class SelectionForm extends React.Component {
   submit = ({ availability }) => {
-    const { message, onSubmit } = this.props;
+    const { context, message, onSubmit } = this.props;
     let messageToSend = new Paho.Message(
       JSON.stringify({
         ...message,
-        timeSlot: availability
+        patientId: context.user.userId,
+        selected: { timeSlot: availability }
       })
     );
     messageToSend.destinationName = strings.DESTINATION;
@@ -24,6 +25,8 @@ class SelectionForm extends React.Component {
 
   render() {
     const { connected, message } = this.props;
+    const availability =
+      message && message.availability.filter(({ patientId }) => !patientId);
     return (
       <Container style={{ margin: "20px 0 20px 0" }}>
         {message ? (
@@ -31,7 +34,7 @@ class SelectionForm extends React.Component {
             onSubmit={this.submit}
             initialValues={{
               ...message,
-              availability: message.availability[0]
+              availability: availability[0].timeSlot
             }}
           >
             {({ handleSubmit, handleChange, values }) => (
@@ -61,7 +64,7 @@ class SelectionForm extends React.Component {
                     value={values.availability}
                     onChange={handleChange}
                   >
-                    {message.availability.map(timeSlot => (
+                    {availability.map(({ timeSlot }) => (
                       <option key={timeSlot}>{timeSlot}</option>
                     ))}
                   </Form.Control>

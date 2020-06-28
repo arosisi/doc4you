@@ -16,9 +16,11 @@ class Marker extends React.Component {
           <p>{`Phone Number: ${phoneNumber}`}</p>
           <p style={{ marginBottom: "0.5rem" }}>Availability:</p>
           <ul style={{ marginLeft: "-0.5rem" }}>
-            {availability.map(timeSlot => (
-              <li key={timeSlot}>{timeSlot}</li>
-            ))}
+            {availability
+              .filter(({ patientId }) => !patientId)
+              .map(({ timeSlot }) => (
+                <li key={timeSlot}>{timeSlot}</li>
+              ))}
           </ul>
         </Popover.Content>
       </Popover>

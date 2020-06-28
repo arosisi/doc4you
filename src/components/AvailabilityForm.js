@@ -31,10 +31,21 @@ class AvailabilityForm extends React.Component {
 
   submit = (values, { resetForm }) => {
     const { coords } = this.props;
-    let message = new Paho.Message(JSON.stringify({ ...values, ...coords }));
+    let message = new Paho.Message(
+      JSON.stringify({ ...this.formatValues(values), ...coords })
+    );
     message.destinationName = strings.DESTINATION;
     messaging.send(message);
     resetForm();
+  };
+
+  formatValues = values => {
+    const { userId, availability, ...other } = values;
+    return {
+      doctorId: userId,
+      availability: availability.map(timeSlot => ({ timeSlot })),
+      ...other
+    };
   };
 
   render() {
@@ -43,7 +54,7 @@ class AvailabilityForm extends React.Component {
       <Container style={{ margin: "20px 0 20px 0" }}>
         <Formik
           onSubmit={this.submit}
-          initialValues={{ ...context.user, availability: [] }}
+          initialValues={{ ...context.getBasicUserInfo(), availability: [] }}
         >
           {({ handleSubmit, handleChange, values }) => (
             <Form onSubmit={handleSubmit}>

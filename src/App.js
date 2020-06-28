@@ -41,6 +41,7 @@ class App extends React.Component {
             zoom: 11
           },
           () => {
+            this.getPreviousMessages();
             this.authenticate();
             this.connect();
           }
@@ -59,6 +60,25 @@ class App extends React.Component {
     this.setState({
       windowWidth: target.innerWidth
     });
+
+  getPreviousMessages = () => {
+    fetch(privateInfo.availabilities_api_endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "get availabilities" })
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.success) {
+          this.setState({ messages: response.availabilities });
+        } else {
+          console.log(response.message);
+        }
+      })
+      .catch(error =>
+        console.log("Unable to connect to API availabilities.", error)
+      );
+  };
 
   authenticate = () => {
     const { context, role } = this.props;
@@ -106,26 +126,24 @@ class App extends React.Component {
   handleMessage = message => {
     const { messages } = this.state;
     const messageObj = JSON.parse(message.payloadString);
-    if (messageObj.timeSlot) {
+    if (messageObj.patientId) {
       // message sent from a patient
       // no new availability will be added
-      // instead, an exisiting availability will lose a timeslot
-      // if it has no timeslots afterwards, it will be deleted
       this.setState({
-        messages: messages
-          .map(message => {
-            const { timeSlot, ...other } = messageObj;
-            if (JSON.stringify(message) === JSON.stringify({ ...other })) {
-              return {
-                ...message,
-                availability: message.availability.filter(
-                  item => item !== timeSlot
-                )
-              };
-            }
-            return message;
-          })
-          .filter(message => message.availability.length)
+        messages: messages.map(message => {
+          const { doctorId, patientId, selected } = messageObj;
+          if (message.doctorId === doctorId) {
+            return {
+              ...message,
+              availability: message.availability.map(({ timeSlot, ...other }) =>
+                timeSlot === selected.timeSlot
+                  ? { patientId, timeSlot }
+                  : { timeSlot, ...other }
+              )
+            };
+          }
+          return message;
+        })
       });
     } else {
       // message sent from a doctor

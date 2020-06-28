@@ -118,6 +118,7 @@ class Panel extends React.Component {
         )}
         {isLoggedIn && role === strings.PATIENT && (
           <SelectionForm
+            context={context}
             connected={connected}
             message={messageSelected}
             onSubmit={onSubmitTimeSlot}

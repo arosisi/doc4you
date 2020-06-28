@@ -13,16 +13,20 @@ class Map extends React.Component {
         defaultCenter={coords}
         defaultZoom={zoom}
       >
-        {messages.map(message => (
-          <Marker
-            key={JSON.stringify(message)}
-            lat={message.lat}
-            lng={message.lng}
-            color='white'
-            message={message}
-            onSelect={() => onSelect(message)}
-          />
-        ))}
+        {messages
+          .filter(message =>
+            message.availability.some(({ patientId }) => !patientId)
+          )
+          .map(message => (
+            <Marker
+              key={JSON.stringify(message)}
+              lat={message.lat}
+              lng={message.lng}
+              color='white'
+              message={message}
+              onSelect={() => onSelect(message)}
+            />
+          ))}
       </GoogleMapReact>
     );
   }
